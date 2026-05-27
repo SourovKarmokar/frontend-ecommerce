@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "./App.css";
-import RootLayout from "./layout/Rootlayout";
+import RootLayout from "./layout/RootLayout";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
 import ProductDetails from "./pages/ProductDetails";
