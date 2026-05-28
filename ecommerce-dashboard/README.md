@@ -4,6 +4,14 @@ Welcome to the **Exclusive Admin Dashboard**, a secure, state-of-the-art web app
 
 ---
 
+## 🔗 Live Deployments & Repository
+
+- **Vercel Live URL (Frontend)**: [https://exclusive-e-commerce-ruddy-nine.vercel.app](https://exclusive-e-commerce-ruddy-nine.vercel.app)
+- **Vercel Live URL (Dashboard)**: [https://ecommerce-dashboard-six-lake.vercel.app](https://ecommerce-dashboard-six-lake.vercel.app)
+- **GitHub Repository**: [https://github.com/SourovKarmokar/frontend-ecommerce](https://github.com/SourovKarmokar/frontend-ecommerce)
+
+---
+
 ## 🔑 Admin Login Credentials
 
 To access the dashboard, use the pre-seeded secure administrator account:

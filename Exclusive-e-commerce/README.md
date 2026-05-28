@@ -2,6 +2,16 @@
 
 Welcome to **Exclusive**, a premium modern client-facing e-commerce storefront web application. Built with **React**, **Redux Toolkit**, **Vite**, **Tailwind CSS**, and **DaisyUI**, it delivers an incredibly beautiful, fast, and seamless shopping experience.
 
+---
+
+## 🔗 Live Deployments & Repository
+
+- **Vercel Live URL (Frontend)**: [https://exclusive-e-commerce-ruddy-nine.vercel.app](https://exclusive-e-commerce-ruddy-nine.vercel.app)
+- **Vercel Live URL (Dashboard)**: [https://ecommerce-dashboard-six-lake.vercel.app](https://ecommerce-dashboard-six-lake.vercel.app)
+- **GitHub Repository**: [https://github.com/SourovKarmokar/frontend-ecommerce](https://github.com/SourovKarmokar/frontend-ecommerce)
+
+---
+
 ## ✨ Premium Features
 
 - **Dynamic Homepage**: Features fully animated slider banners, real-time countdown flash sales, and modular category blocks.
