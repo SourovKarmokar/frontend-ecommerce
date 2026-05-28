@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { FaRegHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
@@ -7,18 +7,6 @@ import { cartTotal } from "../slice/cartSlice";
 import ProductRating from "../components/rating/ProductRating";
 import { ChevronLeft, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import API_BASE_URL from "../config/api";
-
-const CATEGORIES = [
-  "Woman's Fashion",
-  "Men's Fashion",
-  "Electronics",
-  "Home & Lifestyle",
-  "Medicine",
-  "Sports & Outdoor",
-  "Baby's & Toys",
-  "Groceries & Pets",
-  "Health & Beauty",
-];
 
 const Product = () => {
   const [product, setProduct] = useState([]);
@@ -28,16 +16,37 @@ const Product = () => {
   const [loading, setLoading] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [addedId, setAddedId] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const categoryId = searchParams.get("category");
+  const subCategoryId = searchParams.get("subCategory");
   const dispatch = useDispatch();
+
+  const fetchCategories = async () => {
+    try {
+      const { data } = await axios.get(`${API_BASE_URL}/api/v1/category/getallcategories`);
+      if (data.success) {
+        setCategories(data.data);
+      }
+    } catch (err) {
+      console.error("Error fetching categories:", err);
+    }
+  };
 
   const fetchProduct = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(
-        `${API_BASE_URL}/api/v1/product/getallproduct?page=${currentPage}&size=${productPerPage}`
-      );
+      let url = `${API_BASE_URL}/api/v1/product/getallproduct?page=${currentPage}&size=${productPerPage}`;
+      if (categoryId) {
+        url += `&category=${categoryId}`;
+      }
+      if (subCategoryId) {
+        url += `&subCategory=${subCategoryId}`;
+      }
+      const { data } = await axios.get(url);
       setTotalData(data.total);
-      setProduct(data.data);
+      setProduct(data.data || []);
     } catch (error) {
       console.log(error);
     } finally {
@@ -48,9 +57,13 @@ const Product = () => {
   const pageArr = [...Array(Math.ceil(totalData / productPerPage)).keys()].map((i) => i + 1);
 
   useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
     fetchProduct();
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentPage]);
+  }, [currentPage, categoryId, subCategoryId]);
 
   const handleAddToCart = (e, item) => {
     e.preventDefault();
@@ -65,19 +78,82 @@ const Product = () => {
       <h2 className="font-bold text-lg text-gray-800 mb-4">Filters</h2>
       <div className="mb-5">
         <h3 className="font-semibold text-sm text-gray-700 mb-3 uppercase tracking-wide">Category</h3>
-        {CATEGORIES.map((cat) => (
-          <label key={cat} className="flex items-center gap-2 py-1.5 cursor-pointer group">
-            <input type="checkbox" className="rounded accent-red-500 w-4 h-4" />
-            <span className="text-sm text-gray-600 group-hover:text-red-500 transition">{cat}</span>
-          </label>
+        <label className="flex items-center gap-2 py-1.5 cursor-pointer group">
+          <input
+            type="checkbox"
+            checked={!categoryId}
+            onChange={() => {
+              const params = new URLSearchParams(searchParams);
+              params.delete("category");
+              params.delete("subCategory");
+              setSearchParams(params);
+              setCurrentPage(1);
+            }}
+            className="rounded accent-red-500 w-4 h-4"
+          />
+          <span className={`text-sm transition ${!categoryId ? "text-red-500 font-semibold" : "text-gray-600 group-hover:text-red-500"}`}>
+            All Categories
+          </span>
+        </label>
+        {categories.map((cat) => (
+          <div key={cat._id} className="flex flex-col ml-1">
+            <label className="flex items-center gap-2 py-1.5 cursor-pointer group">
+              <input
+                type="checkbox"
+                checked={categoryId === cat._id}
+                onChange={() => {
+                  const params = new URLSearchParams(searchParams);
+                  if (categoryId === cat._id) {
+                    params.delete("category");
+                  } else {
+                    params.set("category", cat._id);
+                  }
+                  params.delete("subCategory"); // Reset subcategory when category changes
+                  setSearchParams(params);
+                  setCurrentPage(1);
+                }}
+                className="rounded accent-red-500 w-4 h-4"
+              />
+              <span className={`text-sm transition ${categoryId === cat._id ? "text-red-500 font-semibold" : "text-gray-600 group-hover:text-red-500"}`}>
+                {cat.name}
+              </span>
+            </label>
+            {cat.subCategory && cat.subCategory.length > 0 && (
+              <div className="pl-6 flex flex-col gap-1 border-l border-gray-100 ml-2 mb-2">
+                {cat.subCategory.map((sub) => (
+                  <label key={sub._id} className="flex items-center gap-2 py-1 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={subCategoryId === sub._id}
+                      onChange={() => {
+                        const params = new URLSearchParams(searchParams);
+                        params.set("category", cat._id);
+                        if (subCategoryId === sub._id) {
+                          params.delete("subCategory");
+                        } else {
+                          params.set("subCategory", sub._id);
+                        }
+                        setSearchParams(params);
+                        setCurrentPage(1);
+                      }}
+                      className="rounded accent-red-500 w-3.5 h-3.5"
+                    />
+                    <span className={`text-xs transition ${subCategoryId === sub._id ? "text-red-500 font-semibold" : "text-gray-500 group-hover:text-red-500"}`}>
+                      {sub.name}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
         ))}
       </div>
       <div>
         <h3 className="font-semibold text-sm text-gray-700 mb-3 uppercase tracking-wide">Price Range</h3>
-        <input type="range" min="0" max="1000" className="w-full accent-red-500" />
+        <input type="range" min="0" max="2000" className="w-full accent-red-500" />
         <div className="flex justify-between text-xs text-gray-500 mt-1">
           <span>৳0</span>
-          <span>৳1000</span>
+          <span>৳2000</span>
         </div>
       </div>
     </div>

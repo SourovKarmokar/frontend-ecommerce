@@ -1,16 +1,59 @@
-# React + Vite
+# Exclusive E-Commerce Admin Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the **Exclusive Admin Dashboard**, a secure, state-of-the-art web application for administrators to manage products, categories, subcategories, and customer orders in real-time.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🔑 Admin Login Credentials
 
-## React Compiler
+To access the dashboard, use the pre-seeded secure administrator account:
+- **Email:** `admin@example.com`
+- **Password:** `adminpassword123`
+- **Required Role:** `admin` (pre-verified in database)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## ✨ Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Dynamic Statistics & Analytics**: Instant overview of total products, categories, active subcategories, and pending orders.
+- **Product Management**: Full CRUD interface to add, edit, or delete products, complete with Cloudinary image uploads, stock counts, rating configurations, and category mapping.
+- **Category & Subcategory Management**: Form controls to create and organize categories and nested subcategories.
+- **Order Management**: Real-time tracking of orders placed by customers, payment confirmations, and status updates.
+- **Modern Dark & Sleek Design**: Beautifully designed UI with glowing gradient backdrops, high-end components, and glassmorphic layouts.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework / Build Tool**: React + Vite
+- **Styling**: Tailwind CSS + Shadcn UI (custom animations & beautiful transitions)
+- **HTTP Client**: Axios (pointing to local backend)
+- **Router**: React Router DOM
+
+---
+
+## 🚀 Local Installation & Setup
+
+Follow these simple steps to run the dashboard application locally:
+
+### 1. Navigate to Directory
+```bash
+cd "frontend-ecommerce/ecommerce-dashboard"
+```
+
+### 2. Install Dependencies
+```bash
+npm install
+```
+
+### 3. Configure Environment Variables
+Verify or create a `.env` file in the project root:
+```env
+VITE_API_URL=http://localhost:5000
+```
+
+### 4. Start Development Server
+```bash
+npm run dev
+```
+The server will start running, usually on **`http://localhost:5174`** (if port 5173 is already in use by the frontend client). Open it in your web browser and sign in using the admin credentials!
